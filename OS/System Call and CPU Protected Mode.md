@@ -1,0 +1,89 @@
+# System Call과 CPU Protected Mode
+
+## System Call
+
+System call이란 OS에서 시스템 자원을 사용하는 것, 또는 그러한 방식을 의미한다. OS의 system call 명령에 의해 실행되는 함수를 **System Call Function**이라고 한다.
+
+Application이 OS에 시스템 자원을 요청하면, OS는 system call function을 호출하여 관련 작업을 실행하고(storage에 접근하여 데이터를 저장하는 등) 결과를 application으로 반환한다.
+
+### API(Application Programming Interface)
+
+API란 application 또는 module간 communication을 할 수 있도록 정의된 방식, interface를 말한다. System call API란 복잡한 system call을 쉽게 사용할 수 있도록 function으로 만들어 두고, 외부에서 사용할 수 있는 형태로 제공하는 것을 말한다.
+
+System call API는 프로그래밍 언어에 따라 각각 정의되어 있다.<br>
+예를 들어, Linux같은 경우 OS 자체가 C로 개발되어 있어서 system call API들도 C function으로 정의되어 있다. 그래서, Linux에서는 system call API를 사용하지 않고도 system call function을 직접 실행시킬 수도 있다.
+
+즉, system call을 위한 system call function이 존재하고, 그 function들을 간편하게 사용할 수 있도록 system call API가 정의되어 있다.
+
+### System Call과 호출 계층
+
+사용자에서 시스템 자원에 이르기까지 호출되는 각 계층들은 다음과 같다.
+
+![system-call-layer](/OS/resources/system-call-layer.png)
+
+1. User는 Application을 사용하며 event를 발생시킨다.
+    - User가 application을 사용하면서 발생하는 모든 형태의 event를 의미한다.
+2. Application 또는 shell 프로그램은 system call API를 사용하여 OS에 시스템 자원을 요청한다.
+    - Shell 프로그램은 시스템 자원을 사용하는 명령들을 감싸고(shell) 있는 프로그램의 일종이다.
+3. System call API는 내부적으로 system call function을 호출하여 system call이 발생한다.
+4. System call이 발생하면 OS는 명령에 따라 특정 시스템 자원에 접근하여 지정된 작업을 수행한다.
+5. **<이후 다루는 내용>** OS가 시스템 자원에 접근하는 동안 **interrupt**가 발생한다.
+    - System call이 매핑되어 있는 0x80 주소로 interrupt가 실행되면 IDT(Interrupt Descriptor Table)에서 해당 주소와 매핑된 함수를 실행한다.
+    - System call interrupt가 발생하면 system call 번호(eax)와 전달인자(ebx)를 가지고 IDT에서 eax register에 저장된 id와 매칭되는 kernal 함수(system call function)을 찾아서 실행한다.
+    - Kernal 함수가 종료되면 다시 application 방향으로 Interrupt가 발생하고, 기존 프로세스로 context switching이 일어난다.
+
+## CPU Protected Mode
+
+CPU 보호 모드란, 무분별한 명령으로부터 시스템 자원(CPU)을 보호하기 위해 설정되는 mode를 말한다. 특정 mode에서는 특정 명령어만 실행될 수 있다.
+
+1. **User mode** : 일반적인 명령을 실행할 수 있는 mode
+2. **Kernal mode** : 특수한 목적의 명령을 실행할 수 있는 mode
+    - 특수한 명령이란, OS가 CPU나 memory 등의 시스템 자원을 사용하고 제어하는 명령을 말한다.
+    - Kernal function : Kernal mode에서만 실행될 수 있는 function
+    - Kernal area : Kernal function들을 저장하고 있는 memory 공간
+
+Application 및 System Call API는 user mode에서 실행되고, 그 아래 계층인 OS의 system call은 kernal mode에서 실행된다.
+
+![system-call-protected-mode](/OS/resources/system-call-protected-mode.png)
+
+<br>
+
+Protected mode는 application이 실행될 때 user mode와 kernal mode간에 계속 전환된다.<br>
+다음은 실제 C 코드가 실행될 때 protected mode가 전환되며 system call이 발생하는 과정을 보여준다.
+
+```C
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int main() {
+    int fd;
+    fd = open("data.txt", O_RDONLY);  // A
+
+    if (fd == -1) { // B
+        printf("Error: can not open file\n");
+        return 1;
+    }
+    else {
+        print("File opened\n");
+        close(fd);
+        return 0;
+    }
+}
+```
+
+1. [User Mode] 프로그램 실행
+2. [User Mode] `A` 시점에 `open()`이라는 system call API 호출
+3. [Mode 전환: User -> Kernal]
+4. [Kernal Mode] System call function(kernal function) 호출(`sys_open()`)
+5. 시스템 자원(Storage)에 접근하여 파일 열기 연산 수행
+6. [Mode 전환: Kernal -> User]
+7. `A` line 실행이 끝나고 `B` line부터 이어서 실행
+
+### CPU Protection Rings
+
+- 컴퓨터의 비정상적인 동작 또는 악성 행동으로부터 시스템 자원과 데이터를 보호하기 위한 매커니즘
+- 가장 낮은 단계(Ring 0, kernal)에서만 kernal 권한으로 실행되는 명령을 통해 시스템 자원을 사용할 수 있다.
+
+![cpu-protection-rings](/OS/resources/cpu-protection-rings.png)
