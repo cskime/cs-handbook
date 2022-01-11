@@ -4,4 +4,5 @@ Computer Science를 공부하고 기록합니다.
 
 ## OS
 
-- [운영체제 기본 개념](https://github.com/cskime/cs-handbook/blob/main/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90.md)
+- [1. 운영체제 기본 개념](https://github.com/cskime/cs-handbook/blob/main/OS/1.%20OS%20Basic.md)
+- [2. System call과 CPU Protected Mode](https://github.com/cskime/cs-handbook/blob/main/OS/2.%20System%20Call%20and%20CPU%20Protected%20Mode.md)
