@@ -12,3 +12,4 @@ Computer Science를 공부하고 기록합니다.
 | 4 | [Interrupt](https://github.com/cskime/cs-handbook/blob/main/OS/4.%20Interrupt.md) | Interrupt, IDT |
 | 5 | [Process의 구조: Text, Data, Stack, Heap](https://github.com/cskime/cs-handbook/blob/main/OS/5.%20Process%20Structure.md) | Stack, Heap, PC, SP, EAX, EBX |
 | 6 | [Context Switching](https://github.com/cskime/cs-handbook/blob/main/OS/6.%20Context%20Switching.md) | PCB |
+| 7 | [IPC(Inter Process Communication)](https://github.com/cskime/cs-handbook/blob/main/OS/7.%20IPC.md) | 가상메모리, Kernal Space, IPC |
