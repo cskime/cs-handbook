@@ -11,3 +11,4 @@ Computer Science를 공부하고 기록합니다.
 | 3 | [Process와 Scheduler 기초](https://github.com/cskime/cs-handbook/blob/main/OS/3.%20Process%20Scheduler%20Basic.md) | Process, Scheduler, Process 상태 |
 | 4 | [Interrupt](https://github.com/cskime/cs-handbook/blob/main/OS/4.%20Interrupt.md) | Interrupt, IDT |
 | 5 | [Process의 구조: Text, Data, Stack, Heap](https://github.com/cskime/cs-handbook/blob/main/OS/5.%20Process%20Structure.md) | Stack, Heap, PC, SP, EAX, EBX |
+| 6 | [Context Switching](https://github.com/cskime/cs-handbook/blob/main/OS/6.%20Context%20Switching.md) | PCB |
