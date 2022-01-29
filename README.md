@@ -17,3 +17,4 @@ Computer Science를 공부하고 기록합니다.
 | 9 | [Thread](https://github.com/cskime/cs-handbook/blob/main/OS/09.%20Thread.md) | Thread, 장단점 |
 | 10 | [Thread 동기화 문제와 해결](https://github.com/cskime/cs-handbook/blob/main/OS/10.%20Thread%20Sync%20Problem.md) | 동기화 문제, 상호 배제, 세마포어 |
 | 11 | [Thread 교착 상태와 기아 상태](https://github.com/cskime/cs-handbook/blob/main/OS/11.%20Thread%20Dead%20Lock%20and%20Starvation.md) | 교착 상태(Dead Lock), 기아 상태(Starvation) |
+| 12 | [가상 메모리](https://github.com/cskime/cs-handbook/blob/main/OS/12.%20Virtual%20Memory.md) | 가상 메모리, MMU |
