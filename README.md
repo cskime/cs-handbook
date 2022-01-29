@@ -1,5 +1,7 @@
 # CS Handbook
 
+> 다른 곳에서 기록하여 이 repository는 archive합니다.
+
 Computer Science를 공부하고 기록합니다.
 
 ## OS
